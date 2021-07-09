@@ -4,7 +4,7 @@ const errorHandler = (err, req, res, next) => {
     let error = { ...err }
 
     // Message Default
-    // error.message = err.message
+    error.message = err.message
 
     // Log console for dev
     console.log(err.stack.red);
