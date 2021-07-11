@@ -7,15 +7,26 @@ const errorHandler = (err, req, res, next) => {
     error.message = err.message
 
     // Log console for dev
-    console.log(err.stack.red);
+    // console.log(err);
 
-    // Error Detect
+    // Error Detect (Not Found)
     if (err.name == 'CastError') {
         const message = `Resource with id ${err.value} is not found`
         error = new ErrorResponse(message, 404)
     }
 
-    // console.log(`Error Gan: ${error.message}`)
+    // Duplicate key
+    if (err.code == '11000') {
+        const message = `Duplicate field value entered`
+        error = new ErrorResponse(message, 400)
+    }
+
+    // Mongoose Validation Error
+    if (err.name == 'ValidationError') {
+        const message = Object.values(err.errors).map(el => el.message)
+        error = new ErrorResponse(message, 400)
+    }
+
     res.status(error.statusCode || 500).json({ success: false, error: error.message || 'Server Error' })
 }
 
