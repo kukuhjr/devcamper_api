@@ -1,9 +1,11 @@
+const path = require('path');
 const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
 const connectToDB = require('./config/db')
 const errorHandler = require('./middleware/error')
-const colors = require('colors')
+const fileupdload = require('express-fileupload')
+const colors = require('colors');
 // const logger = require('./middleware/logger'); // Morgan but handmade
 
 // Load env vars
@@ -23,6 +25,12 @@ app.use(express.json())
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
+
+// File upload
+app.use(fileupdload())
+
+// Set static folder (accessable on web browser)
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Mount routers
 app.use('/api/v1/bootcamps', bootcamps);
@@ -46,9 +54,9 @@ process.on('unhandledRejection', (err, promise) => {
   
 
 
-  // app.get('/test', (req, res) => {
-  //   // res.send('<h1>HEHEHE</h1>');
-  //   // res.json({ name: 'mamang' });
-  //   // res.sendStatus(404);
-  //   res.status(200).json({ success: true, data: { id: 1 } });
-  // });
+// app.get('/test', (req, res) => {
+//   // res.send('<h1>HEHEHE</h1>');
+//   // res.json({ name: 'mamang' });
+//   // res.sendStatus(404);
+//   res.status(200).json({ success: true, data: { id: 1 } });
+// });
