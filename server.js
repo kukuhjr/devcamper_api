@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const connectToDB = require('./config/db')
 const errorHandler = require('./middleware/error')
 const fileupdload = require('express-fileupload')
+const cookieParser = require('cookie-parser')
 const colors = require('colors');
 // const logger = require('./middleware/logger'); // Morgan but handmade
 
@@ -23,6 +24,8 @@ const app = express();
 
 // Body Parser
 app.use(express.json())
+// Cookie parser
+app.use(cookieParser())
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
