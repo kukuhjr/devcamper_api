@@ -91,7 +91,7 @@ exports.getBootcampInRadius = asyncHandler(async (req, res, next) => {
 
 // @desc    Upload photo for bootcamp
 // @route   PUT /api/v1/bootcamps/:id/photo
-// @access  Public
+// @access  Private
 exports.bootcampUploadPhoto = asyncHandler(async (req, res, next) => {
     const bootcamp = await Bootcamp.findById(req.params.id);
     if (!bootcamp) {
