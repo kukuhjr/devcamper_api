@@ -35,14 +35,20 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 
 // @desc    Add course
 // @route   POST /api/v1/bootcamps/:bootcampId/courses
-// @access  Public
+// @access  Private
 exports.addCourse = asyncHandler(async (req, res, next) => {
     req.body.bootcamp = req.params.bootcampId
+    req.body.user = req.user.id
     
     const bootcamp = await Bootcamp.findById(req.params.bootcampId)
 
     if (!bootcamp) {
         return next(new ErrorResponse(`No bootcamp with the id of ${req.params.bootcampId}`), 404)
+    }
+
+    // Check bootcamp owner
+    if (req.user.id !== bootcamp.user.toString() && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User with id ${req.user.id} is not authorized to this action`, 401))
     }
 
     const course = await Course.create(req.body)
@@ -52,14 +58,17 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
 
 // @desc    Update course
 // @route   PUT /api/v1/courses/:id
-// @access  Public
+// @access  Private
 exports.updateCourse = asyncHandler(async (req, res, next) => {
     let course = await Course.findById(req.params.id)
     // If Course not found
     if (!course) {
         return next(new ErrorResponse(`No course with the id of ${req.params.id}`), 404)
     }
-
+    // Check bootcamp owner
+    if (req.user.id !== course.user.toString() && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User with id ${req.user.id} is not authorized to this action`, 401))
+    }
     // update
     course = await Course.findOneAndUpdate(req.params.id, req.body, {
         new: true,
@@ -78,7 +87,10 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
     if (!course) {
         return next(new ErrorResponse(`No course with the id of ${req.params.id}`), 404)
     }
-
+    // Check bootcamp owner
+    if (req.user.id !== course.user.toString() && req.user.role !== 'admin') {
+        return next(new ErrorResponse(`User with id ${req.user.id} is not authorized to this action`, 401))
+    }
     // update
     await course.remove();
     

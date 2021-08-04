@@ -34,8 +34,14 @@ const CourseSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Bootcamp',
         required: true
+    },
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
     }
 })
+
 // Static func
 // Course.goFish()
 // method
@@ -58,7 +64,6 @@ CourseSchema.statics.getAverageCost = async function(bootcampId) {
         }
     ]);
     try {
-        // Jika tidak kosong
         await this.model('Bootcamp').findByIdAndUpdate(bootcampId, {
             averageCost: Math.ceil(obj[0].averageCost / 10) * 10
         })
