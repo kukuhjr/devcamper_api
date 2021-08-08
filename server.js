@@ -65,3 +65,7 @@ process.on('unhandledRejection', (err, promise) => {
 //   // res.sendStatus(404);
 //   res.status(200).json({ success: true, data: { id: 1 } });
 // });
+
+// TEST
+// const hehe = require('./test');
+// hehe()
