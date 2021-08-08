@@ -1,15 +1,31 @@
 const nodemailer = require("nodemailer");
 
 const sendEmail = async (options) => {
+  // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
-    secure: false, // true for 465, false for other ports
     auth: {
-      user: process.env.STMP_USER,
-      pass: process.env.SMTP_PASSWORD,
+      user: "821d007378792e",
+      pass: "2db998074a2a8f",
     }
   });
+
+  // Transporter send to gmail account   
+//   const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//         type: "OAuth2",
+//         user: process.env.FROM_EMAIL,
+//         clientId: process.env.CLIENT_ID,
+//         clientSecret: process.env.CLIENT_SECRET,
+//         refreshToken: process.env.REFRESH_TOKEN,
+//         accessToken: process.env.ACCESS_TOKEN
+//     },
+//     tls: {
+//         rejectUnauthorized: false
+//     }
+//   });
 
   // send mail with defined transport object
   let message = {
@@ -20,10 +36,6 @@ const sendEmail = async (options) => {
   };
 
   const info = await transporter.sendMail(message)
-
-  // console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
 }
 
 module.exports = sendEmail
