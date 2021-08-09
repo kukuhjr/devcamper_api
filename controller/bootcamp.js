@@ -15,7 +15,6 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/bootcamps/id
 // @access  Public
 exports.getBootcamp = asyncHandler(async (req, res, next) => {
-    console.log(req.params)
     const bootcamp = await Bootcamp.findById(req.params.id)
     // Wrong id, right format
     if (!bootcamp) {
