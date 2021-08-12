@@ -6,6 +6,7 @@ const connectToDB = require('./config/db')
 const errorHandler = require('./middleware/error')
 const fileupdload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
+const mongoSanitize = require('express-mongo-sanitize')
 const colors = require('colors');
 // const logger = require('./middleware/logger'); // Morgan but handmade
 
@@ -35,6 +36,8 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
 // File upload
 app.use(fileupdload())
 
+// Mongo Sanitize
+app.use(mongoSanitize())
 // Set static folder (accessable on web browser)
 app.use(express.static(path.join(__dirname, 'public')))
 

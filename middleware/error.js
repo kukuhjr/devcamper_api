@@ -11,7 +11,7 @@ const errorHandler = (err, req, res, next) => {
 
     // Error Detect (Not Found)
     if (err.name == 'CastError') {
-        const message = `Resource with id ${err.value} is not found`
+        const message = `Resource is not found`
         error = new ErrorResponse(message, 404)
     }
 
