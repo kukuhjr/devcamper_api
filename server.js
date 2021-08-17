@@ -7,6 +7,11 @@ const errorHandler = require('./middleware/error')
 const fileupdload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
 const mongoSanitize = require('express-mongo-sanitize')
+const helmet = require('helmet');
+const xss = require('xss-clean')
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors')
 const colors = require('colors');
 // const logger = require('./middleware/logger'); // Morgan but handmade
 
@@ -38,6 +43,21 @@ app.use(fileupdload())
 
 // Mongo Sanitize
 app.use(mongoSanitize())
+// Helmet security header
+app.use(helmet())
+// Prevent XSS attack
+app.use(xss())
+// Rate Limit express
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,  // 10 mins
+  max: 100
+})
+app.use(limiter)
+// Header Parameter Pollution
+app.use(hpp())
+// Enable CORS
+app.use(cors())
+
 // Set static folder (accessable on web browser)
 app.use(express.static(path.join(__dirname, 'public')))
 
